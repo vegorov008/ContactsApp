@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ViewModels="clr-namespace:ContactsApp.ViewModels"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+    ios:Page.UseSafeArea="True"
+    Title=""
+    BackgroundColor="White"
+    NavigationPage.HasNavigationBar='False'
+    x:Class="ContactsApp.MainPage">
+    <ContentPage.BindingContext>
+        <ViewModels:MainPageViewModel />
+    </ContentPage.BindingContext>
+
+
+    <Grid RowSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Margin="24,24,24,4" Text="Контакты" TextColor="Black" FontSize="20" HorizontalOptions="Center" VerticalOptions="Start"/>
+        <Label Grid.Row="1" Margin="24,4,24,24" Text="{Binding StatusText}" TextColor="Black" FontSize="14" HorizontalOptions="Center" VerticalOptions="Start"/>
+
+        <BoxView Grid.Row="2" BackgroundColor="Black" HeightRequest="1" Opacity="0.1" HorizontalOptions="FillAndExpand" VerticalOptions="Start"/>
+
+        <CollectionView Grid.Row="3" ItemsSource="{Binding Items}" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                        <Frame Margin="24,8,24,8" BackgroundColor="White" HasShadow="True" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                            <Grid RowSpacing="0" BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Row="0" Margin="16,4,16,2" Text="{Binding DisplayName}" FontAttributes="Bold" FontSize="16" HorizontalOptions="Start" VerticalOptions="Start"/>
+                                <Label Grid.Row="1" Margin="16,2,16,4" Text="{Binding Phone}" FontSize="16" HorizontalOptions="Start" VerticalOptions="Start"/>
+
+                            </Grid>
+                        </Frame>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Grid.Row="4" Command="{Binding RefreshCommand}" Text="Обновить" TextColor="White" BackgroundColor="DodgerBlue" HeightRequest="48" HorizontalOptions="FillAndExpand" VerticalOptions="End"/>
+    </Grid>
+
+</ContentPage>
