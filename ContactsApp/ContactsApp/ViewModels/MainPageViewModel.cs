@@ -93,19 +93,7 @@ namespace ContactsApp.ViewModels
                     {
                         try
                         {
-                            List<Contact> contacts = null;
-                            await Device.InvokeOnMainThreadAsync(async () =>
-                            {
-                                try
-                                {
-                                    contacts = await _contactsService.GetContactsAsync();
-                                }
-                                catch (Exception ex)
-                                {
-                                    ExceptionHandler.HandleException(ex);
-                                }
-                            });
-
+                            var contacts = await _contactsService.GetContactsAsync();
                             if (contacts != null)
                             {
                                 await _contactsDataStore.RemoveItemsAsync();

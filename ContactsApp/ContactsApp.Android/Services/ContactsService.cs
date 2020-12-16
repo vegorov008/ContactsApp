@@ -34,7 +34,7 @@ namespace ContactsApp.Droid.Services
             bool granted = await _activity.TryGrantPermissions(Android.Manifest.Permission.ReadContacts);
             if (granted)
             {
-                var androidContacts = GetAndroidContacts();
+                var androidContacts = await _activity.RunOnUiTrhreadAsync<List<AndroidContact>>(GetAndroidContacts);
                 if (androidContacts != null)
                 {
                     result = new List<Contact>();
