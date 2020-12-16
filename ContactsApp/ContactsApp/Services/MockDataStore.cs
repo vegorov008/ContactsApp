@@ -27,7 +27,7 @@ namespace ContactsApp.Services
             };
         }
 
-        public async Task<bool> AddOrUpdateItemAsync(Contact item)
+        public async Task<bool> AddOrUpdateAsync(Contact item)
         {
             _items.RemoveAll(x => x.Equals(item));
             _items.Add(item);
@@ -35,14 +35,25 @@ namespace ContactsApp.Services
             return await Task.FromResult(true);
         }
 
-        public async Task<bool> RemoveItemAsync(Guid id)
+        public async Task<bool> AddOrUpdateAsync(IEnumerable<Contact> items)
+        {
+            foreach (var item in items)
+            {
+                _items.RemoveAll(x => x.Equals(item));
+            }
+            _items.AddRange(items);
+
+            return await Task.FromResult(true);
+        }
+
+        public async Task<bool> RemoveAsync(Guid id)
         {
             _items.RemoveAll(x => x.Id == id);
 
             return await Task.FromResult(true);
         }
 
-        public async Task<bool> RemoveItemsAsync()
+        public async Task<bool> RemoveAllAsync()
         {
             _items.Clear();
 

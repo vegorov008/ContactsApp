@@ -13,6 +13,8 @@ namespace ContactsApp.ViewModels
 {
     public class MainPageViewModel : BaseViewModel
     {
+        readonly object _uiUpdateSyncObject = new object();
+
         readonly Dictionary<RefreshStatus, string> _statusStrings = new Dictionary<RefreshStatus, string>()
         {
             { RefreshStatus.RefreshNeeded, "Требуется синхронизация" },
@@ -96,12 +98,8 @@ namespace ContactsApp.ViewModels
                             var contacts = await _contactsService.GetContactsAsync();
                             if (contacts != null)
                             {
-                                await _contactsDataStore.RemoveItemsAsync();
-
-                                for (int i = 0; i < contacts.Count; i++)
-                                {
-                                    await _contactsDataStore.AddOrUpdateItemAsync(contacts[i]);
-                                }
+                                await _contactsDataStore.RemoveAllAsync();
+                                await _contactsDataStore.AddOrUpdateAsync(contacts);
 
                                 Update();
                                 Status = RefreshStatus.RefreshSucceed;
@@ -134,9 +132,15 @@ namespace ContactsApp.ViewModels
                 try
                 {
                     var contacts = await _contactsDataStore.GetItemsAsync();
-                    for (int i = 0; i < contacts.Count; i++)
+                    if (contacts?.Count > 0)
                     {
-                        _viewModels.Add(new ContactViewModel(contacts[i]));
+                        lock (_viewModels)
+                        {
+                            for (int i = 0; i < contacts.Count; i++)
+                            {
+                                _viewModels.Add(new ContactViewModel(contacts[i]));
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -150,10 +154,19 @@ namespace ContactsApp.ViewModels
         {
             try
             {
-                Items.Clear();
-                for (int i = 0; i < _viewModels.Count; i++)
+                lock (_uiUpdateSyncObject)
                 {
-                    Items.Add(_viewModels[i]);
+                    Items.Clear();
+                    lock (_viewModels)
+                    {
+                        if (_viewModels?.Count > 0)
+                        {
+                            for (int i = 0; i < _viewModels.Count; i++)
+                            {
+                                Items.Add(_viewModels[i]);
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)

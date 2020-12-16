@@ -6,9 +6,11 @@ namespace ContactsApp.Services
 {
     public interface IDataStore<T>
     {
-        Task<bool> AddOrUpdateItemAsync(T item);
-        Task<bool> RemoveItemAsync(Guid id);
-        Task<bool> RemoveItemsAsync();
+        Task<bool> AddOrUpdateAsync(T item);
+        Task<bool> AddOrUpdateAsync(IEnumerable<T> items);
+
+        Task<bool> RemoveAsync(Guid id);
+        Task<bool> RemoveAllAsync();
         Task<T> GetItemAsync(Guid id);
         Task<List<T>> GetItemsAsync();
     }

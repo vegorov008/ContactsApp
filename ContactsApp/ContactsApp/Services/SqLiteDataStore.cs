@@ -14,19 +14,25 @@ namespace ContactsApp.Services
             _dataProvider = dataProvider;
         }
 
-        public async Task<bool> AddOrUpdateItemAsync(TModel item)
+        public async Task<bool> AddOrUpdateAsync(TModel item)
         {
             await _dataProvider.AddOrUpdate(item);
             return await Task.FromResult(true);
         }
 
-        public async Task<bool> RemoveItemAsync(Guid id)
+        public async Task<bool> AddOrUpdateAsync(IEnumerable<TModel> items)
+        {
+            await _dataProvider.AddOrUpdate(items);
+            return await Task.FromResult(true);
+        }
+
+        public async Task<bool> RemoveAsync(Guid id)
         {
             await _dataProvider.Remove<TModel>(id);
             return await Task.FromResult(true);
         }
 
-        public async Task<bool> RemoveItemsAsync()
+        public async Task<bool> RemoveAllAsync()
         {
             await _dataProvider.RemoveAll<TModel>();
             return await Task.FromResult(true);

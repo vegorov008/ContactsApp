@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContactsApp
+namespace System
 {
     public static class Extensions
     {
@@ -48,6 +48,38 @@ namespace ContactsApp
             }
 
             return result;
+        }
+    }
+}
+
+namespace System.Collections.Generic
+{
+    public static class Extensions
+    {
+        //public static void RemoveAll<T>(this ICollection<T> collection, T item)
+        //{
+        //    collection.Remove(item);
+        //}
+
+        //public static void RemoveAll<T>(this ICollection<T> collection, IEnumerable<T> items)
+        //{
+        //    foreach (var item in items)
+        //    {
+        //        collection.Remove(item);
+        //    }
+        //}
+
+        public static void RemovenjnAll<T>(this IList<T> list, T item)
+        {
+            list.Remove(item);
+        }
+
+        public static void RemoveAll<T>(this ICollection<T> collection, IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                collection.Remove(item);
+            }
         }
     }
 }

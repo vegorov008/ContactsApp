@@ -56,7 +56,7 @@ namespace ContactsApp.Services
             }
         }
 
-        public async Task AddOrUpdate<TEntity>(TEntity entity) where TEntity : class, IHasIdentity
+        public async Task AddOrUpdate<TEntity>(TEntity item) where TEntity : class, IHasIdentity
         {
             try
             {
@@ -70,7 +70,7 @@ namespace ContactsApp.Services
                         attempt++;
                         lock (_syncObject)
                         {
-                            _db.InsertOrReplace(entity);
+                            _db.InsertOrReplace(item);
                         }
                         success = true;
                     }
@@ -83,6 +83,21 @@ namespace ContactsApp.Services
                     {
                         await Task.Delay(_db.BusyTimeout > TimeSpan.MinValue ? _db.BusyTimeout : TimeSpan.FromMilliseconds(_timeout));
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+            }
+        }
+
+        public async Task AddOrUpdate<TEntity>(IEnumerable<TEntity> items) where TEntity : class, IHasIdentity
+        {
+            try
+            {
+                foreach (var item in items)
+                {
+                    await AddOrUpdate(item);
                 }
             }
             catch (Exception ex)
@@ -177,11 +192,6 @@ namespace ContactsApp.Services
                         lock (_syncObject)
                         {
                             result = _db.Table<TEntity>().FirstOrDefault(x => x.Id == key);
-
-                            //if (_db.Table<TEntity>().FirstOrDefault(x => x.Id.Equals(key)) != null)
-                            //{
-                            //    result = _db.GetWithChildren<TEntity>(key);
-                            //}
                         }
                         success = true;
                     }
@@ -219,11 +229,6 @@ namespace ContactsApp.Services
                         lock (_syncObject)
                         {
                             result = _db.Table<TEntity>().ToList();
-
-                            //if (_db.Table<TEntity>().Count() > 0)
-                            //{
-                            //    result = _db.GetAllWithChildren<TEntity>(filter);
-                            //}
                         }
                         success = true;
                     }
