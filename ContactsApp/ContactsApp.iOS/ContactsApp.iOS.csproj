@@ -61,6 +61,7 @@
     <MtouchArch>ARM64</MtouchArch>
     <CodesignKey>iPhone Developer</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <MtouchLink>SdkOnly</MtouchLink>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -133,7 +134,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\ContactsApp\ContactsApp.csproj">
-      <Project>{D49864C9-A11B-4B53-AE4F-6E3530B8B903}</Project>
+      <Project>{38379466-5C9B-48C2-A2BB-48D0238B8EAC}</Project>
       <Name>ContactsApp</Name>
     </ProjectReference>
   </ItemGroup>

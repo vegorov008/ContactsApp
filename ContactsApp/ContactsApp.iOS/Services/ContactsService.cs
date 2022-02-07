@@ -6,6 +6,8 @@ using Contacts;
 using ContactsApp.Models;
 using ContactsApp.Services;
 using Foundation;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace ContactsApp.iOS.Services
 {
@@ -17,7 +19,7 @@ namespace ContactsApp.iOS.Services
         {
             var result = new List<Contact>();
 
-            var iosContacts = GetIosContacts();
+            var iosContacts = await GetIosContacts();
             if (iosContacts != null)
             {
                 foreach (var item in iosContacts)
@@ -41,30 +43,40 @@ namespace ContactsApp.iOS.Services
             return result;
         }
 
-        List<CNContact> GetIosContacts()
+        async Task <List<CNContact>> GetIosContacts()
         {
+            
             var result = new List<CNContact>();
-
-            using (var store = new CNContactStore())
+            await Device.InvokeOnMainThreadAsync(() =>
             {
-                NSError error;
-                var allContainers = store.GetContainers(null, out error);
-                foreach (var container in allContainers)
+                try
                 {
-                    try
+                    using (var store = new CNContactStore())
                     {
-                        using (var predicate = CNContact.GetPredicateForContactsInContainer(container.Identifier))
+                        var allContainers = store.GetContainers(null, out _);
+                        foreach (var container in allContainers)
                         {
-                            var containerResults = store.GetUnifiedContacts(predicate, _keys, out error);
-                            result.AddRange(containerResults);
+                            try
+                            {
+                                using (var predicate = CNContact.GetPredicateForContactsInContainer(container.Identifier))
+                                {
+                                    var containerResults = store.GetUnifiedContacts(predicate, _keys, out _);
+                                    result.AddRange(containerResults);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                ExceptionHandler.HandleException(ex);
+                            }
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        ExceptionHandler.HandleException(ex);
-                    }
                 }
-            }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.HandleException(ex);
+                }
+                });
+            //}
 
             return result;
         }

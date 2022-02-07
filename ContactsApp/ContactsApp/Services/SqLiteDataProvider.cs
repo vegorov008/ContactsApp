@@ -76,7 +76,7 @@ namespace ContactsApp.Services
                     }
                     catch (SQLiteException ex)
                     {
-                        //ExceptionHandler.HandleException(ex);
+                        ExceptionHandler.HandleException(ex);
                     }
 
                     if (!success)

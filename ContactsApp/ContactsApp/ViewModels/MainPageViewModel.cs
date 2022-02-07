@@ -156,7 +156,15 @@ namespace ContactsApp.ViewModels
             {
                 lock (_uiUpdateSyncObject)
                 {
-                    Items.Clear();
+                    if (Items.Count > 0 && Device.RuntimePlatform == Device.iOS)
+                    {
+                        Items = new ObservableCollection<ContactViewModel>();
+                    }
+                    else
+                    {
+                        Items.Clear();
+                    }
+                    
                     lock (_viewModels)
                     {
                         if (_viewModels?.Count > 0)

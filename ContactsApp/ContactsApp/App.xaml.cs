@@ -10,13 +10,20 @@ namespace ContactsApp
     {
         public App()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            SqLiteDataProvider sqLiteDataProvider = new SqLiteDataProvider();
-            DependencyService.RegisterSingleton(sqLiteDataProvider);
-            DependencyService.RegisterSingleton<IDataStore<Contact>>(new SqLiteDataStore<Contact>(sqLiteDataProvider));
+                SqLiteDataProvider sqLiteDataProvider = new SqLiteDataProvider();
+                DependencyService.RegisterSingleton(sqLiteDataProvider);
+                DependencyService.RegisterSingleton<IDataStore<Contact>>(new SqLiteDataStore<Contact>(sqLiteDataProvider));
 
-            MainPage = new MainPage();
+                MainPage = new MainPage();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+            }
         }
 
         protected override void OnStart()

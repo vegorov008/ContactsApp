@@ -16,7 +16,6 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>true</AndroidUseAapt2>
@@ -96,7 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ContactsApp\ContactsApp.csproj">
-      <Project>{D49864C9-A11B-4B53-AE4F-6E3530B8B903}</Project>
+      <Project>{38379466-5C9B-48C2-A2BB-48D0238B8EAC}</Project>
       <Name>ContactsApp</Name>
     </ProjectReference>
   </ItemGroup>

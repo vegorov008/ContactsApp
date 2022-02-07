@@ -13,6 +13,7 @@ namespace ContactsApp
             {
                 try
                 {
+                    Debugger.Break();
                     Debug.WriteLine(ex);
                 }
                 catch (Exception e)
